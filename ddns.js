@@ -17,54 +17,50 @@ try {
 
 var server = restify.createServer();
 
-server.get('/api/v1/update', auth, update);
+server.get('/api/v1/update', update);
 
 server.listen(9001, function() {
     console.log('PowerDDNS API listening at %s',  server.url);
 });
 
-function auth(req, res, next) {
-    req.query.zone = (req.query.zone + '').toLowerCase();
-    req.query.name = (req.query.name + '').toLowerCase();
-    req.query.type = (req.query.type + '').toUpperCase();
-    req.query.ttl = parseInt(req.query.ttl + '');
-    req.query.data = (req.query.data + '').toLowerCase();
-    req.query.key = req.query.key + '';
+function update(req, res) {
+    var zone = (req.query.zone + '').toLowerCase(),
+        name = (req.query.name + '').toLowerCase(),
+        type = (req.query.type + '').toUpperCase(),
+        ttl = parseInt(req.query.ttl + ''),
+        data = (req.query.data + '').toLowerCase(),
+        nat = req.query.nat,
+        key = req.query.key + '';
 
     if (!config.zone_key || config.zone_key[zone] !== key ) return fail(res);
     if (zone !== tld.getDomain(name)) return fail(res);
     if (config.allowed_type.indexOf(type) === -1) return fail(res);
     if (ttl < config.min_ttl) return fail(res);
 
-    next();
-}
-
-function update(req, res) {
-
     var rr = {
-        name: req.query.name,
-        type: req.query.type,
-        ttl: req.query.ttl,
+        name: name,
+        type: type,
+        ttl: ttl,
         changetype: "REPLACE",
         records: [
             {
-                content: req.query.data,
+                content: data,
                 disabled: false
             }
         ]
     };
 
-    if (req.query.type === 'A' || req.query.type === 'AAAA') {
-        rr.name = req.query.name + '.';
+    if (type === 'A' || type === 'AAAA') {
+        rr.name = name + '.';
     }
 
-    if (req.query.nat) {
+    if (nat) {
         rr.records[0].content = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     }
 
     request({
         method: 'PATCH',
-        url: config.pdns_api_uri + '/api/v1/servers/localhost/zones/' + req.query.zone + '.',
+        url: config.pdns_api_uri + '/api/v1/servers/localhost/zones/' + zone + '.',
         headers: {
             'User-Agent': 'powerddns-api',
             'X-API-Key': config.pdns_api_key
