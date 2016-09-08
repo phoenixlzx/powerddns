@@ -16,6 +16,7 @@ try {
 }
 
 var server = restify.createServer();
+server.use(restify.queryParser());
 
 server.get('/api/v1/update', update);
 
@@ -24,6 +25,7 @@ server.listen(9001, function() {
 });
 
 function update(req, res) {
+
     var zone = (req.query.zone + '').toLowerCase(),
         name = (req.query.name + '').toLowerCase(),
         type = (req.query.type + '').toUpperCase(),
