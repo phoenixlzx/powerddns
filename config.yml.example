@@ -1,0 +1,17 @@
+# PowerDNS DDNS Config
+
+bind: 127.0.0.1
+port: 9001
+
+pdns_api_uri: 'http://127.0.0.1:8081'
+pdns_api_key: 'yourapikey'
+
+allowed_type:
+- A
+- AAAA
+- CNAME
+
+min_ttl: 60
+
+zone_key:
+  'example.com': 'averyloneapikeyforyouruser'
