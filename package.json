@@ -16,6 +16,7 @@
   "dependencies": {
     "js-yaml": "^3.6.1",
     "request": "^2.74.0",
-    "restify": "^4.1.1"
+    "restify": "^4.1.1",
+    "tldjs": "^1.6.2"
   }
 }
