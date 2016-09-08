@@ -57,7 +57,7 @@ function update(req, res) {
     }
 
     if (nat) {
-        rr.records[0].content = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        rr.records[0].content = req.headers['x-forwarded-for'].split(',')[0] || req.connection.remoteAddress;
     }
 
     request({
