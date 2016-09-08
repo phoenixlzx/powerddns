@@ -1,0 +1,21 @@
+{
+  "name": "powerddns",
+  "version": "0.0.1",
+  "description": "Dynamic DNS based on PowerDNS API",
+  "main": "ddns.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "DNS",
+    "DDNS",
+    "PowerDNS"
+  ],
+  "author": "Phoenix Nemo <me@v9.org>",
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^3.6.1",
+    "request": "^2.74.0",
+    "restify": "^4.1.1"
+  }
+}
