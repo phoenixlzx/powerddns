@@ -20,7 +20,7 @@ server.use(restify.queryParser());
 
 server.get('/api/v1/update', update);
 
-server.listen(9001, function() {
+server.listen(config.port, config.bind, function() {
     console.log('PowerDDNS API listening at %s',  server.url);
 });
 
