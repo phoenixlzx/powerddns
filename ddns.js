@@ -34,7 +34,7 @@ function auth(req, res, next) {
     if (!config.zone_key || config.zone_key[zone] !== key ) return fail(res);
     if (zone !== tld.getDomain(name)) return fail(res);
     if (config.allowed_type.indexOf(type) === -1) return fail(res);
-    if (ttl > config.min_ttl) return fail(res);
+    if (ttl < config.min_ttl) return fail(res);
 
     next();
 }
